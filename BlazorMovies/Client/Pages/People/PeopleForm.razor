@@ -1,0 +1,67 @@
+﻿
+<EditForm Model="person" OnValidSubmit="OnValidSubmit">
+    <DataAnnotationsValidator />
+
+    <div class="form-group">
+        <label> Name </label>
+        <InputText class="form-control" @bind-Value="@person.Name"></InputText>
+        <ValidationMessage For="@(()=> person.Name)" />
+    </div>
+
+    <div class="form-group">
+        <label> Date Of Birth</label>
+        <InputDate class="form-control" @bind-Value="@person.DateOfBirth"></InputDate>
+        <ValidationMessage For="@(()=> person.DateOfBirth)" />
+    </div>
+
+    <div class="form-group">
+        <label> Biography</label>
+        <textarea class="form-control" @bind="@person.Biography" rows="3" ></textarea>
+        <ValidationMessage For="@(()=> person.Biography)" />
+    </div>
+
+
+    <div class="form-group">
+        <InputImage Label="Picture" OnSelectedImage="PictureSelected" ImageURL="@imageURL" />
+
+    </div>
+
+
+    <div class="form-group">
+        <button class="btn btn-primary" type="submit">Submit</button>
+    </div>
+</EditForm>
+
+
+
+@code {
+
+    @* These parameter are going to be used when exporting this razor component*@
+    [Parameter]
+    public Person person { get; set; }
+
+    [Parameter]
+    public EventCallback OnValidSubmit { get; set; }
+
+    @* These parameter are going to be used when importing the InputImage razor component*@
+
+    string imageURL;
+    private void PictureSelected(string imageBase64)
+    {
+        person.Picture = imageBase64;
+        imageURL = null;
+        Console.WriteLine(imageBase64);
+    }
+
+    @* Given that the InputImage razor component can be used for both creating and editing images, we need to check if there are any pictures to uploaded at the beginning for editing *@
+protected override void OnInitialized()
+{
+    if (!string.IsNullOrEmpty(person.Picture))
+    {
+        imageURL = person.Picture;
+        person.Picture = null;
+    }
+}
+
+
+}

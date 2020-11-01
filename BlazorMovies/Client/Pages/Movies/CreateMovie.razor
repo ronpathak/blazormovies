@@ -1,0 +1,51 @@
+﻿@page "/movies/create"
+@inject NavigationManager navigationManager
+@inject IMoviesRepository movieRepository
+@inject IPeopleRepository peopleRepository
+@inject IGenresRepository genreRepository
+
+<h3>Create Movie</h3>
+
+@if(NotSelectedGenres != null)
+{
+<MovieForm movie="movie" NotSelectedGenres="NotSelectedGenres" SelectedGenres="SelectedGenres" OnValidSubmit="SaveMovie" />
+}
+
+
+
+
+
+@code {
+
+    private Movie movie = new Movie();
+    List<Genre> Genres;
+    private List<Genre> NotSelectedGenres;
+    private List<Genre> SelectedGenres;
+
+    protected async override Task OnInitializedAsync()
+    {
+        SelectedGenres = new List<Genre>();
+        NotSelectedGenres = await genreRepository.GetGenres();
+    }
+
+    private async Task SaveMovie()
+    {
+        Console.WriteLine($"Movie saved with name: { movie.Title}");
+        Console.WriteLine($"Movie saved with summary: { movie.Summary}");
+        Console.WriteLine($"Movie saved with tralier: { movie.Trailer}");
+        Console.WriteLine($"Movie saved with In Theatres: { movie.InTheatres}");
+        Console.WriteLine($"Movie saved with genre: { movie.Genre}");
+        Console.WriteLine($"Movie saved with poster: { movie.Poster}");
+
+        try
+        {
+            await movieRepository.CreateMovie(movie);
+            navigationManager.NavigateTo("movies/search");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+    }
+
+}

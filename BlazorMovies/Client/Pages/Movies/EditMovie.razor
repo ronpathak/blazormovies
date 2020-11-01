@@ -1,0 +1,55 @@
+﻿@page "/movies/edit/{MovieId:int}"
+@page "/movies/edit/{MovieId:int}/{MovieName}"
+@inject NavigationManager navigationManager
+
+<h3>Edit Movie</h3>
+
+<MovieForm movie="movie" NotSelectedGenres = "NotSelectedGenres" SelectedGenres = "SelectedGenres" OnValidSubmit="MovieEdit" />
+
+
+
+@code {
+        [Parameter]
+        public int MovieId { get; set; }
+
+        [Parameter]
+        public string MovieName { get; set; }
+
+        private Movie movie = new Movie();
+
+        private List<Genre> SelectedGenres = new List<Genre>() 
+    {
+        new Genre(){Id= 11, Name="Action"},
+        new Genre(){Id= 12, Name="Adventure"} 
+    };
+
+        private List<Genre> NotSelectedGenres = new List<Genre>()
+    {
+        new Genre(){Id= 13, Name="Kids"},
+        new Genre(){Id= 14, Name="Romance"}
+    };
+
+        protected override void OnInitialized()
+        {
+            movie = new Movie() { Id = MovieId, Title = "Superman", Summary = "Once upon a time there was only 1 superhero", InTheatres = true, Trailer = "This is where the trailer clip would be", Poster = "https://m.media-amazon.com/images/M/MV5BNzY2ZDQ2MTctYzlhOC00MWJhLTgxMmItMDgzNDQwMDdhOWI2XkEyXkFqcGdeQXVyNjc1NTYyMjg@._V1_UX182_CR0,0,182,268_AL_.jpg" };
+
+
+
+    }
+
+
+    private void MovieEdit()
+    {
+        Console.WriteLine($"Movie saved with name: { movie.Title}");
+        Console.WriteLine($"Movie saved with summary: { movie.Summary}");
+        Console.WriteLine($"Movie saved with tralier: { movie.Trailer}");
+        Console.WriteLine($"Movie saved with In Theatres: { movie.InTheatres}");
+        Console.WriteLine($"Movie saved with genre: { movie.Genre}");
+        Console.WriteLine($"Movie saved with poster: { movie.Poster}");
+        navigationManager.NavigateTo("movies/search");
+    }
+
+
+
+
+}

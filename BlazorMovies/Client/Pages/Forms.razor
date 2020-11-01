@@ -1,0 +1,71 @@
+﻿@page "/forms"
+@using static BlazorMovies.Client.Shared.MainLayout
+@inject IJSRuntime js
+
+<h3>Forms</h3>
+
+<div>
+    <div style="width:150px">
+        <select @bind="@AppState.Color" class="form-control" style="margin-top: 15px; margin-bottom: 15px">
+            <option value="green">Green</option>
+            <option value="red">Red</option>
+            <option value="blue">Blue</option>
+        </select>
+    </div>
+
+    <div style="width:150px">
+        <select @bind="@AppState.Size" class="form-control" style="margin-top: 15px; margin-bottom: 15px">
+            <option value="10px">10px</option>
+            <option value="20px">20px</option>
+            <option value="30px">30px</option>
+        </select>
+    </div>
+
+</div>
+
+<div class="form-group">
+
+    <label> What's your name?</label>
+    <input type="text" name="name" @bind="UserName" />
+    <button class="btn btn-primary" style="background-color:@AppState.Color; font-size:  @AppState.Size" type="submit" @onclick="submitName">Enter</button>
+
+    <h4>@UserName</h4>
+    <h6>@pencil.Name</h6>
+</div>
+
+@code {
+
+
+    [CascadingParameter] public AppState AppState { get; set; }
+
+    public class SaleItem
+    {
+        public string Name;
+        public decimal Cost;
+
+        public SaleItem(string name, decimal cost)
+        {
+            Name = name;
+            Cost = cost;
+        }
+
+    }
+
+    SaleItem pencil = new SaleItem ("pencil", 1.99m);
+
+    public string UserName { get; set; }
+
+    public async Task submitName()
+    {
+        var confirmed = await js.Confirm("are you sure?");
+        if (confirmed)
+        {
+            await js.CustomFunction("let's hope our console javascript function works");
+
+        }
+        //var confirmed = await js.InvokeAsync<bool>("confirm", "are you sure?");
+
+        Console.WriteLine(UserName);
+    }
+
+}

@@ -1,0 +1,88 @@
+﻿
+
+<div>
+
+    <div class="movies-container">
+
+
+
+        @if (Movies == null)
+        {
+            <text> Loading...</text>
+        }
+        else if (Movies.Count == 0)
+        {
+            <text>There are no movies listed</text>
+        }
+        else
+        {
+
+
+            @foreach (var movie in Movies)
+            {
+
+
+
+                <IndividualMovie movie="movie"
+                                 Delete="DeleteMovie"></IndividualMovie>
+
+
+
+            };
+     }
+    </div>
+</div>
+
+
+<ConfirmationModalt @ref="confirmation" onConfirm="onConfirm" onCancel="onCancel">
+    <RF1> Are you sure you want to delete @movieToBeDeleted.Title</RF1>
+</ConfirmationModalt>
+
+<ConfirmationModalt @ref="confirmationOfCancel" onConfirm="onConfirm2" onCancel="onCancel2">
+</ConfirmationModalt>
+
+
+@code {
+
+
+    ConfirmationModalt confirmation;
+    ConfirmationModalt confirmationOfCancel;
+
+    [Parameter]
+    public List<Movie> Movies {get;set;}
+
+
+
+    Movie movieToBeDeleted;
+    private void DeleteMovie(Movie movie)
+    {
+        confirmation.Show();
+        movieToBeDeleted = movie;
+    }
+
+    void onConfirm()
+    {
+        confirmation.Hide();
+        confirmationOfCancel.Show();
+    }
+
+    void onConfirm2()
+    {
+        Movies.Remove(movieToBeDeleted);
+        confirmationOfCancel.Hide();
+        movieToBeDeleted = null;
+    }
+
+    void onCancel()
+    {
+        confirmation.Hide();
+        movieToBeDeleted = null;
+
+    }
+    void onCancel2()
+    {
+        confirmationOfCancel.Hide();
+        movieToBeDeleted = null;
+
+    }
+}

@@ -1,0 +1,49 @@
+﻿<h3>LengthConverter</h3>
+
+<div class="d-inline">
+    <input type="number" name="name" @bind="Inches" @bind:event="oninput" placeholder="inches"/>
+</div>
+
+<div class="d-inline">
+    <span>=</span>
+</div>
+
+<div class="d-inline">
+    <input type="number" name="name" @bind="Centimeters" @bind:event="oninput" placeholder="centimeters" />
+</div>
+
+<div>
+    <p>@Name , you are @Inches inches tall (which is equal to @Centimeters centimeteres)</p>
+</div>
+
+
+
+@code {
+
+    double inches = 1;
+    double centimeters = 2.5;
+
+    [Parameter]
+    public string Name { get; set; }
+
+    [Parameter]
+    public double Inches {
+        get => inches;
+        set
+        {
+            centimeters = value * 2.54;
+            inches = value;
+        }
+    }
+
+    [Parameter]
+    public double Centimeters {
+        get => centimeters;
+        set
+        {
+            inches = value / 2.54;
+            centimeters = value;
+        }
+    }
+
+}

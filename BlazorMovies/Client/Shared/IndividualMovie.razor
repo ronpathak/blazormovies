@@ -1,0 +1,48 @@
+﻿
+<div class="individual-movie-container">
+    <a href="@movieURL">
+        <img src="@movie.Poster" alt="Poster" class="movie-poster" />
+    </a>
+
+    <p><a href="@movieURL">@movie.TitleBrief</a></p>
+    <p>@movie.Genre</p>
+
+    <div>
+        <a class="btn btn-info" href="@movieEditURL">Edit</a>
+        <button type="button" class="btn btn-danger" @onclick="@(()=>Delete.InvokeAsync(movie))">Delete</button>
+    </div>
+
+
+
+</div>
+
+
+@code {
+    [Parameter]
+    public Movie movie { get; set; }
+
+    [Parameter]
+    public bool ButtonDisplay { get; set; } = false;
+
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IDictionary<string, object> AdditionalParameters { get; set; }
+
+    [Parameter]
+    public EventCallback<Movie> Delete { get; set; }
+
+
+    private string movieURL = string.Empty;
+    private string movieEditURL = string.Empty;
+
+    protected override void OnInitialized()
+    {
+        movieURL =$"movie/{movie.Id}/{movie.Title.Replace(" ","-")}";
+        movieEditURL = $"movies/edit/{movie.Id}/{movie.Title.Replace(" ", "-")}";
+
+    }
+
+
+
+
+}
