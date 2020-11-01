@@ -6,19 +6,16 @@
 
 <h3>Create Movie</h3>
 
-@if(NotSelectedGenres != null)
+@if (NotSelectedGenres != null)
 {
-<MovieForm movie="movie" NotSelectedGenres="NotSelectedGenres" SelectedGenres="SelectedGenres" OnValidSubmit="SaveMovie" />
+    <MovieForm movie="movie" NotSelectedGenres="NotSelectedGenres" SelectedGenres="SelectedGenres" OnValidSubmit="SaveMovie" />
 }
-
-
 
 
 
 @code {
 
     private Movie movie = new Movie();
-    List<Genre> Genres;
     private List<Genre> NotSelectedGenres;
     private List<Genre> SelectedGenres;
 
@@ -32,15 +29,14 @@
     {
         Console.WriteLine($"Movie saved with name: { movie.Title}");
         Console.WriteLine($"Movie saved with summary: { movie.Summary}");
-        Console.WriteLine($"Movie saved with tralier: { movie.Trailer}");
-        Console.WriteLine($"Movie saved with In Theatres: { movie.InTheatres}");
-        Console.WriteLine($"Movie saved with genre: { movie.Genre}");
-        Console.WriteLine($"Movie saved with poster: { movie.Poster}");
+
 
         try
         {
-            await movieRepository.CreateMovie(movie);
-            navigationManager.NavigateTo("movies/search");
+            Movie CreatedMovie = await movieRepository.CreateMovie(movie);
+            int movieId = CreatedMovie.Id;
+            string movieName = CreatedMovie.Title.Replace(" ", "-");
+            navigationManager.NavigateTo($"movies/{movieId}/{movieName}");
         }
         catch (Exception ex)
         {

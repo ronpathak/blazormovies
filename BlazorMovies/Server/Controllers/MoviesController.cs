@@ -84,7 +84,6 @@ namespace BlazorMovies.Server.Controllers
         public async Task<ActionResult<Movie>> PostMovie(Movie movie)
         {
 
-
             if (!string.IsNullOrWhiteSpace(movie.Poster))
             {
                 var moviePoster = Convert.FromBase64String(movie.Poster);
@@ -102,7 +101,8 @@ namespace BlazorMovies.Server.Controllers
             _context.Movies.Add(movie);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetMovie", new { id = movie.Id }, movie);
+            return movie; 
+            //CreatedAtAction("GetMovie", new { id = movie.Id }, movie);
         }
 
         // DELETE: api/Movies/5

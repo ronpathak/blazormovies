@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
@@ -23,19 +24,6 @@ namespace BlazorMovies.Server
                     webBuilder.UseStartup<Startup>();
                 });
 
-        public class Startup
-        {
-            public void ConfigureServices(IServiceCollection services)
-                => services.AddDbContext<ApplicationDbContext>();
-        }
-
-        public class ApplicationDbContext : DbContext
-        {
-            public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-                : base(options)
-            {
-            }
-        }
 
     }
 }

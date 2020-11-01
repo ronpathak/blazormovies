@@ -57,6 +57,7 @@ namespace BlazorMovies.Client.Repositories
             {
                 throw new ApplicationException(await response.GetBody());
             }
+
         }
 
 

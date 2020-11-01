@@ -19,14 +19,12 @@ namespace BlazorMovies.Shared.Entities
 
         public string Trailer { get; set; }
 
-
-        [Required(ErrorMessage = "Oops - remind me what genre this movie falls under")]
         public string Genre { get; set; }
 
         public List<MoviesGenres> MovieGenres { get; set; } = new List<MoviesGenres>();
         public List<MoviesPersons> MovieActors { get; set; } = new List<MoviesPersons>();
 
-        [Required(ErrorMessage = "Oops - a picture says a thousand words")]
+        //[Required(ErrorMessage = "Oops - a picture says a thousand words")]
         public string Poster { get; set; }
         
         public string TitleBrief 
