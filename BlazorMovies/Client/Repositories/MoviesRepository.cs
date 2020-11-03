@@ -17,14 +17,19 @@ namespace BlazorMovies.Client.Repositories
             this.httpService = httpService;
         }
 
-        public async Task<Movie> CreateMovie(Movie movie)
+        public async Task CreateMovie(Movie movie)
         {
-            var response = await httpService.Post<Movie>(url, movie);
+            Console.WriteLine("movie repository function being executed");
+            var response = await httpService.Post(url, movie);
             if (!response.Success)
             {
+                Console.WriteLine("Http response not success");
                 throw new ApplicationException(await response.GetBody());
             }
-            return (Movie)response.Response;
+            
         }
+
+
+
     }
 }

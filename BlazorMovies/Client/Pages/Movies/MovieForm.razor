@@ -33,12 +33,12 @@
         <MultipleSelectorTypeahead Context="person" SearchMethod="SearchMethod" SelectedElements="SelectedActors">
 
             <MyResultTemplate>
-                <img style="width: 50px;" src="@person.Picture"/>
+                <img style="width: 50px;" src="@person.Picture" />
                 @person.Name
             </MyResultTemplate>
 
             <MyListTemplate>
-                @person.Name / <input type="text" placeholder="Character" @bind="person.Character"/>
+                @person.Name / <input type="text" placeholder="Character" @bind="person.Character" />
             </MyListTemplate>
 
         </MultipleSelectorTypeahead>
@@ -59,27 +59,37 @@
 
 @code {
 
-    [Parameter]
-    public Movie movie { get; set; }
+    [Parameter] public Movie movie { get; set; }
 
-    [Parameter]
-    public EventCallback OnValidSubmit { get; set; }
+    [Parameter] public EventCallback OnValidSubmit { get; set; }
 
-    [Parameter]
-    public List<Genre> SelectedGenres { get; set; } = new List<Genre>();
+    [Parameter] public List<Genre> SelectedGenres { get; set; } = new List<Genre>();
 
-    [Parameter]
-    public List<Genre> NotSelectedGenres { get; set; } = new List<Genre>();
+    [Parameter] public List<Genre> NotSelectedGenres { get; set; } = new List<Genre>();
+
+    [Parameter] public List<Person> SelectedActors { get; set; } = new List<Person>();
 
     private List<MultipleSelectorModel> Selected = new List<MultipleSelectorModel>();
     private List<MultipleSelectorModel> NotSelected = new List<MultipleSelectorModel>();
 
-    [Parameter]
-    public List<Person> SelectedActors { get; set; } = new List<Person>();
-
-
-
     private string imageURL;
+
+
+    @* Given that the InputImage razor component can be used for both creating and editing images, we need to check if there are any pictures to uploaded at the beginning for editing *@
+    protected override void OnInitialized()
+    {
+        @* if any genre types have been previously assigned, organise them into selected and non-selected *@
+        Selected = SelectedGenres.Select(x => new MultipleSelectorModel(x.Id.ToString(), x.Name)).ToList();
+        NotSelected = NotSelectedGenres.Select(x => new MultipleSelectorModel(x.Id.ToString(), x.Name)).ToList();
+
+        @* i a picture has been previously assigned, then show it. *@
+        if (!string.IsNullOrEmpty(movie.Poster))
+        {
+            imageURL = movie.Poster;
+            movie.Poster = null;
+        }
+    }
+
     private void PosterSelected(string imageBase64)
     {
         movie.Poster = imageBase64;
@@ -87,36 +97,22 @@
         Console.WriteLine(imageBase64);
     }
 
-    @* Given that the InputImage razor component can be used for both creating and editing images, we need to check if there are any pictures to uploaded at the beginning for editing *@
-protected override void OnInitialized()
-{
-    Selected = SelectedGenres.Select(x => new MultipleSelectorModel(x.Id.ToString(), x.Name)).ToList();
-    NotSelected = NotSelectedGenres.Select(x => new MultipleSelectorModel(x.Id.ToString(), x.Name)).ToList();
-
-
-    if (!string.IsNullOrEmpty(movie.Poster))
+    private async Task<IEnumerable<Person>> SearchMethod(string searchText)
     {
-        imageURL = movie.Poster;
-        movie.Poster = null;
+        return await peopleRepository.GetPersonByName(searchText);
     }
-}
 
-private async Task<IEnumerable<Person>> SearchMethod(string searchText)
-{
-    return await peopleRepository.GetPersonByName(searchText);
-}
+    private async Task OnDataAnnotationsValidated()
+    {
+        //movie.MovieGenres = Selected
+        //    .Select(x => new MoviesGenres { GenreId = int.Parse(x.Key) }).ToList();
 
-private async Task OnDataAnnotationsValidated()
-{
-    movie.MovieGenres = Selected
-        .Select(x => new MoviesGenres { GenreId = int.Parse(x.Key) }).ToList();
+        //movie.MovieActors = SelectedActors
+        //    .Select(x => new MoviesPersons { PersonId = x.Id, Character = x.Character }).ToList();
 
-    movie.MovieActors = SelectedActors
-        .Select(x => new MoviesPersons { PersonId = x.Id, Character = x.Character }).ToList();
-
-    if (!string.IsNullOrWhiteSpace(movie.Poster)) { imageURL = null; }
-
-    await OnValidSubmit.InvokeAsync(null);
-}
+        if (!string.IsNullOrWhiteSpace(movie.Poster)) { imageURL = null; }
+        Console.WriteLine("OnDatAnnotationsValidated invoking OnValidSubmit");
+        await OnValidSubmit.InvokeAsync(null);
+    }
 
 }

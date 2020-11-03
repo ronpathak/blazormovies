@@ -55,6 +55,7 @@ namespace BlazorMovies.Client.Helpers
 
         public async Task<HttpResponseWrapper<TResponse>> Post<T, TResponse>(string url, T data)
         {
+            Console.WriteLine("Http being executed");
             var dataJson = JsonSerializer.Serialize(data);
             var stringContent = new StringContent(dataJson, Encoding.UTF8, "application/json");
             var response = await httpClient.PostAsync(url, stringContent);

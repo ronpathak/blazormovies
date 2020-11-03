@@ -13,7 +13,7 @@
 
     private async Task Create()
     {
-        Console.WriteLine($"Creating a new Person record for {Person.Name} who was born on {Person.DateOfBirth}");
+        
         try
         {
             await peopleRepository.CreatePerson(Person);

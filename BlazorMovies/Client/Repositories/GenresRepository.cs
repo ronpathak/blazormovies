@@ -50,9 +50,9 @@ namespace BlazorMovies.Client.Repositories
         }
 
 
-        public async Task UpdateGenre(Genre genre)
+        public async Task UpdateGenre(int Id, Genre genre)
         {
-            var response = await httpService.Put(url, genre);
+            var response = await httpService.Put($"{url}/{Id}", genre);
             if (!response.Success)
             {
                 throw new ApplicationException(await response.GetBody());

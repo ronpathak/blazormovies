@@ -33,15 +33,17 @@
 
         try
         {
-            Movie CreatedMovie = await movieRepository.CreateMovie(movie);
-            int movieId = CreatedMovie.Id;
-            string movieName = CreatedMovie.Title.Replace(" ", "-");
-            navigationManager.NavigateTo($"movies/{movieId}/{movieName}");
+            Console.WriteLine("trying to write to database");
+            await movieRepository.CreateMovie(movie);
+
         }
         catch (Exception ex)
         {
             Console.WriteLine(ex.Message);
         }
+        //StateHasChanged();
+        navigationManager.NavigateTo("movies/search");
+
     }
 
 }

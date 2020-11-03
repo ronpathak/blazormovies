@@ -57,13 +57,14 @@ namespace BlazorMovies.Client.Repositories
             {
                 throw new ApplicationException(await response.GetBody());
             }
-
         }
 
 
-        public async Task UpdatePerson(Person person)
+        public async Task UpdatePerson(int Id, Person person)
         {
-            var response = await httpService.Put(url, person);
+            Console.WriteLine("starting people repo update");
+            var response = await httpService.Put($"{url}/{Id}", person);
+            Console.WriteLine("awaiting feedback from https");
             if (!response.Success)
             {
                 throw new ApplicationException(await response.GetBody());

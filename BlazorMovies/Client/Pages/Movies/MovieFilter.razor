@@ -1,111 +1,114 @@
 ﻿@page "/movies/search"
-<h3>MovieFilter</h3>
-
-<div class="form-inline">
-    <div class="form-group mx-1 mb-2">
-        <label for="title" class="sr-only">Title</label>
-        <input type="text" class="form-control" id="title" placeholder="Movie TItle"
-               @bind-value="title"
-               @bind-value:event="oninput"
-               @onkeypress="@((KeyboardEventArgs e)=>TitleKeyPress(e))" />
+    <div class="container d-block mb-2">
+        <h3 class="d-inline">MovieFilter</h3>
+        <a class="btn btn-primary float-right" href="/movies/create"> Create</a>
     </div>
-    <div class="form-group mx-2 mb-2">
-        <select class="form-control" @bind="selectedGenre">
-            <option value="0"> -Select a Genre- </option>
-            @foreach (var genre in Genres)
+    <div class="container">
+        <div class="form-inline">
+            <div class="form-group mx-1 mb-2">
+                <label for="title" class="sr-only">Title</label>
+                <input type="text" class="form-control" id="title" placeholder="Movie TItle"
+                       @bind-value="title"
+                       @bind-value:event="oninput"
+                       @onkeypress="@((KeyboardEventArgs e)=>TitleKeyPress(e))" />
+            </div>
+            <div class="form-group mx-2 mb-2">
+                <select class="form-control" @bind="selectedGenre">
+                    <option value="0"> -Select a Genre- </option>
+                    @foreach (var genre in Genres)
+                    {
+                        <option value="@genre.Id">@genre.Name</option>
+                    }
+                </select>
+            </div>
+
+            <div class="form-group mx-2 mb-2">
+                <input type="checkbox" class="form-check-input" id="upcomingReleases" @bind="upcomingReleases" />
+                <label class="form-check-label" for="upcomingReleases">Upcoming Release</label>
+            </div>
+
+            <div class="form-group mx-2 mb-2">
+                <input type="checkbox" class="form-check-input" id="upcomingReleases" @bind="inTheatres" />
+                <label class="form-check-label" for="inTheatres">In Theatres</label>
+            </div>
+            <div class="form-group mx-2 mb-2">
+                <button class="btn btn-primary mx-1" @onclick="SearchForMovies">Filter</button>
+                <button class="btn btn-danger mx-1" @onclick="Clear">Clear</button>
+            </div>
+        </div>
+        <div>
+            <MoviesList Movies="movies"></MoviesList>
+
+        </div>
+
+    </div>
+
+        @code {
+            // declare all the variables and parameters
+            string title = "";
+            string selectedGenre = "0";
+            bool upcomingReleases = false;
+            bool inTheatres = false;
+            private List<Genre> Genres = new List<Genre>()
             {
-                <option value="@genre.Id">@genre.Name</option>
-            }
-        </select>
-    </div>
-
-    <div class="form-group mx-2 mb-2">
-        <input type="checkbox" class="form-check-input" id="upcomingReleases" @bind="upcomingReleases" />
-        <label class="form-check-label" for="upcomingReleases">Upcoming Release</label>
-    </div>
-
-    <div class="form-group mx-2 mb-2">
-        <input type="checkbox" class="form-check-input" id="upcomingReleases" @bind="inTheatres" />
-        <label class="form-check-label" for="inTheatres">In Theatres</label>
-    </div>
-    <div class="form-group mx-2 mb-2">
-        <button class="btn btn-primary mx-1" @onclick="SearchForMovies">Filter</button>
-        <button class="btn btn-danger mx-1" @onclick="Clear">Clear</button>
-    </div>
-    </div>
-<div>
-    <MoviesList Movies="movies"></MoviesList>
-
-</div>
-
-
-
-    @code {
-        // declare all the variables and parameters
-        string title = "";
-        string selectedGenre = "0";
-        bool upcomingReleases = false;
-        bool inTheatres = false;
-        private List<Genre> Genres = new List<Genre>()
-        {
             new Genre() { Id = 1, Name = "Action" },
             new Genre() { Id = 2, Name = "Adventure" },
             new Genre() { Id = 4, Name = "Kids" },
             new Genre() { Id = 5, Name = "Romance" },
             new Genre() { Id = 6, Name = "Thriller" }
         };
-        private List<Movie> movies;
-        private List<Movie> movies1;
+            private List<Movie> movies;
+            private List<Movie> movies1;
 
 
-        //load up the movie data on start up         
-        protected override void OnInitialized()
-        {
-            movies1 = new List<Movie>()
-        {
+            //load up the movie data on start up
+            protected override void OnInitialized()
+            {
+                movies1 = new List<Movie>()
+            {
             new Movie(){Id = 1, Title = "Moana", Genre = "Kids", Poster="https://m.media-amazon.com/images/M/MV5BMjI4MzU5NTExNF5BMl5BanBnXkFtZTgwNzY1MTEwMDI@._V1_UX182_CR0,0,182,268_AL_.jpg"},
             new Movie(){Id = 2, Title = "Goonies", Genre = "Adventure", Poster="https://m.media-amazon.com/images/M/MV5BODRlMjRkZGEtZWM2Zi00ZjYxLWE0MWUtMmM1YWM2NzZlOTE1XkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_UX182_CR0,0,182,268_AL_.jpg"},
             new Movie(){Id = 3, Title = "Gone With The Wind", Genre = "Romance" , Poster="https://m.media-amazon.com/images/M/MV5BYjUyZWZkM2UtMzYxYy00ZmQ3LWFmZTQtOGE2YjBkNjA3YWZlXkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_UX182_CR0,0,182,268_AL_.jpg"},
             new Movie(){Id = 4, Title = "Avengers", Genre = "Action" , Poster="https://m.media-amazon.com/images/M/MV5BNDYxNjQyMjAtNTdiOS00NGYwLWFmNTAtNThmYjU5ZGI2YTI1XkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_UX182_CR0,0,182,268_AL_.jpg"},
             new Movie(){Id = 5, Title = "Superman", Genre = "Action" , Poster="https://m.media-amazon.com/images/M/MV5BNzY2ZDQ2MTctYzlhOC00MWJhLTgxMmItMDgzNDQwMDdhOWI2XkEyXkFqcGdeQXVyNjc1NTYyMjg@._V1_UX182_CR0,0,182,268_AL_.jpg"}
         };
-            movies = movies1;
-        }
-
-
-        // run the search
-        private void SearchForMovies()
-        {
-
-            movies = movies1.Where(x => x.Title.Contains(title)).ToList();
-
-            Console.WriteLine($"title:{title}");
-            Console.WriteLine($"selectedGenre:{selectedGenre}");
-            Console.WriteLine($"upcomingReleases:{upcomingReleases}");
-            Console.WriteLine($"inTheatres:{inTheatres}");
-        }
-
-
-        // on pressing enter, run the filter
-        private void TitleKeyPress(KeyboardEventArgs e)
-        {
-            if (e.Key == "Enter")
-            {
-                SearchForMovies();
+                movies = movies1;
             }
+
+
+            // run the search
+            private void SearchForMovies()
+            {
+
+                movies = movies1.Where(x => x.Title.Contains(title)).ToList();
+
+                Console.WriteLine($"title:{title}");
+                Console.WriteLine($"selectedGenre:{selectedGenre}");
+                Console.WriteLine($"upcomingReleases:{upcomingReleases}");
+                Console.WriteLine($"inTheatres:{inTheatres}");
+            }
+
+
+            // on pressing enter, run the filter
+            private void TitleKeyPress(KeyboardEventArgs e)
+            {
+                if (e.Key == "Enter")
+                {
+                    SearchForMovies();
+                }
+            }
+
+            // clear the filter
+            private void Clear()
+            {
+
+                movies = movies1;
+
+                title = "";
+                selectedGenre = "0";
+                upcomingReleases = false;
+                inTheatres = false;
+            }
+
+
         }
-
-        // clear the filter
-        private void Clear()
-        {
-
-            movies = movies1;
-
-            title = "";
-            selectedGenre = "0";
-            upcomingReleases = false;
-            inTheatres = false;
-        }
-
-
-    }

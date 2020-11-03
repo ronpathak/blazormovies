@@ -11,7 +11,6 @@ namespace BlazorMovies.Shared.Entities
 
         [Required(ErrorMessage ="Oops - you forgot to mention the name of the movie") ]
         public string Title { get; set; }
-        
 
         public string Summary { get; set; }
 
@@ -24,7 +23,7 @@ namespace BlazorMovies.Shared.Entities
         public List<MoviesGenres> MovieGenres { get; set; } = new List<MoviesGenres>();
         public List<MoviesPersons> MovieActors { get; set; } = new List<MoviesPersons>();
 
-        //[Required(ErrorMessage = "Oops - a picture says a thousand words")]
+        [Required(ErrorMessage = "Oops - a picture says a thousand words")]
         public string Poster { get; set; }
         
         public string TitleBrief 

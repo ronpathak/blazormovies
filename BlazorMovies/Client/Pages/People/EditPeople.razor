@@ -1,39 +1,51 @@
 ﻿@page  "/people/edit/{PersonId:int}"
+@inject NavigationManager navigationManager
+@inject IPeopleRepository peopleRepository
+<h3>Edit People</h3>
 
-    <h3>Edit People</h3>
-    
-        @if (Person != null)
+@if (Person != null)
+{
+
+    <PeopleForm person="Person" OnValidSubmit="Edit" />
+
+
+}
+
+
+@code {
+
+
+    [Parameter]
+    public int PersonId { get; set; }
+
+    [Parameter]
+    public string PersonName { get; set; }
+
+    Person Person = new Person();
+
+
+    protected async override Task OnInitializedAsync()
+    {
+        try
         {
-
-            <PeopleForm person="Person" OnValidSubmit="Edit" />
-
-
+            Person = await peopleRepository.GetPerson(PersonId);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
         }
 
-
-            @code {
-
-
-                [Parameter]
-                public int PersonId { get; set; }
-
-                [Parameter]
-                public string PersonName { get; set; }
-
-                Person Person = new Person();
+    }
 
 
-                protected override void OnInitialized()
-                {
-                    Person = new Person() { Id = PersonId, Name = "Steve", DateOfBirth= DateTime.Today};
-                }
+    private async Task Edit()
+    {
+        Console.WriteLine("starting edit");
+        await peopleRepository.UpdatePerson(PersonId, Person);
+        Console.WriteLine("db updated");
+        navigationManager.NavigateTo("people");
+
+    }
 
 
-                private void Edit()
-                {
-                    Console.WriteLine($"Update the person's name to {Person.Name}");
-                }
-
-
-            }
-    
+}

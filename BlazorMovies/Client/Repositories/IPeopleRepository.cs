@@ -13,6 +13,6 @@ namespace BlazorMovies.Client.Repositories
         Task<Person> GetPerson(int Id);
         Task<List<Person>> GetPerson();
         Task<List<Person>> GetPersonByName(string name);
-        Task UpdatePerson(Person person);
+        Task UpdatePerson(int Id, Person person);
     }
 }

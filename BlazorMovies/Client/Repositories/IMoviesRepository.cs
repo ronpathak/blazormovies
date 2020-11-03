@@ -8,6 +8,7 @@ namespace BlazorMovies.Client.Repositories
 {
     interface IMoviesRepository
     {
-        Task<Movie> CreateMovie(Movie movie);
+        //Task<Movie> CreateMovie(Movie movie);
+        Task CreateMovie(Movie movie);
     }
 }

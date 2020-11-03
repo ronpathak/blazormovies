@@ -1,4 +1,6 @@
 ﻿@page "/genre/edit/{GenreId:int}"
+@inject NavigationManager navigationManager
+@inject IGenresRepository genreRepository
 
 <h3>Edit Genre</h3>
 
@@ -18,14 +20,26 @@
     public int GenreId { get; set; }
     public Genre genre;
 
-    protected override void OnInitialized()
+
+    protected override async Task OnInitializedAsync()
     {
-        genre = new Genre() { Id = GenreId, Name = "Comedy" };
+        try
+        {
+            genre = await genreRepository.GetGenre(GenreId);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
     }
+
 
     private void Edit()
     {
-        Console.WriteLine(genre.Name + "has been edited using a razor component.");
+        
+        genreRepository.UpdateGenre(GenreId, genre);
+        navigationManager.NavigateTo("genre");
+
     }
 
 }

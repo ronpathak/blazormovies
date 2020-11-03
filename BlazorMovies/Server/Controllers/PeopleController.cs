@@ -69,6 +69,12 @@ namespace BlazorMovies.Server.Controllers
                 return BadRequest();
             }
 
+            if (!string.IsNullOrWhiteSpace(person.Picture))
+            {
+                var personPicture = Convert.FromBase64String(person.Picture);
+                person.Picture = await fileStorageService.SaveFile(personPicture, "jpg", "people");
+            }
+
             _context.Entry(person).State = EntityState.Modified;
 
             try

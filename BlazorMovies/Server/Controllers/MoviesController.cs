@@ -90,19 +90,19 @@ namespace BlazorMovies.Server.Controllers
                 movie.Poster= await fileStorageService.SaveFile(moviePoster, "jpg", "movies");
             }
 
-            if (movie.MovieActors != null)
-            {
-                for (int i = 0; i < movie.MovieActors.Count; i++)
-                {
-                    movie.MovieActors[i].Order = i + 1;
-                }
-            }
+            //if (movie.MovieActors != null)
+            //{
+            //    for (int i = 0; i < movie.MovieActors.Count; i++)
+            //    {
+            //        movie.MovieActors[i].Order = i + 1;
+            //    }
+            //}
 
             _context.Movies.Add(movie);
             await _context.SaveChangesAsync();
 
-            return movie; 
-            //CreatedAtAction("GetMovie", new { id = movie.Id }, movie);
+            // return movie; 
+            return CreatedAtAction("GetMovie", new { id = movie.Id }, movie);
         }
 
         // DELETE: api/Movies/5
