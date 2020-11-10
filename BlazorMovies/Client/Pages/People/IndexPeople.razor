@@ -9,6 +9,10 @@
     <a class="btn btn-info" href="people/create">Add Actors</a>
 </div>
 
+
+
+<Paginator CurrentPage="@PageSelected" TotalAmountPages="totalAmountPages" SelectedPage="SelectedPage"/>
+
 <GenericList List="People">
     <WholeListTemplate>
         <table class="table table-striped">
@@ -39,11 +43,16 @@
 
     List<Person> People;
 
+    private int PageSelected = 1;
+    private int RecordsPerPageSelected = 2;
+
+    private int totalAmountPages;
+
     protected override async Task OnInitializedAsync()
     {
         try
         {
-            People = await peopleRepository.GetPerson();
+            await LoadPeople(PageSelected, RecordsPerPageSelected);
         }
         catch (Exception ex)
         {
@@ -51,9 +60,38 @@
         }
     }
 
+    private async Task<List<Person>> LoadPeople(int PageSelected, int RecordsPerPageSelected)
+    {
+        CalculatePages();
+        People = await peopleRepository.GetPeopleByPage(PageSelected, RecordsPerPageSelected);
+        return People;
+    }
+
+    private async Task<int> CalculatePages()
+    {
+        int NumberRecords = await peopleRepository.CountPeople();
+        if (NumberRecords % RecordsPerPageSelected == 0)
+        {
+            totalAmountPages = NumberRecords / RecordsPerPageSelected;
+        }
+        else
+        {
+            totalAmountPages = (NumberRecords / RecordsPerPageSelected)+1;
+        }
+
+        return totalAmountPages;
+    }
+
+
+    private async Task SelectedPage(int page)
+    {
+        PageSelected = page;
+        await LoadPeople(PageSelected, RecordsPerPageSelected);
+    }
+
     private async Task DeletePerson(int Id)
     {
         await peopleRepository.DeletePerson(Id);
-        People = await peopleRepository.GetPerson();
+        People = await peopleRepository.GetPeople();
     }
 }

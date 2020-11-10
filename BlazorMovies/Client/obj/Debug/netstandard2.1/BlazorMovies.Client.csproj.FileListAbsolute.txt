@@ -416,8 +416,10 @@ C:\Users\Ron2\source\repos\BlazorMovies\BlazorMovies\Client\obj\Debug\netstandar
 C:\Users\Ron2\source\repos\BlazorMovies\BlazorMovies\Client\obj\Debug\netstandard2.1\Razor\Shared\MultipleSelectorTypeahead.razor.g.cs
 C:\Users\Ron2\source\repos\BlazorMovies\BlazorMovies\Client\obj\Debug\netstandard2.1\RazorDeclaration\Shared\GenericList.razor.g.cs
 C:\Users\Ron2\source\repos\BlazorMovies\BlazorMovies\Client\obj\Debug\netstandard2.1\Razor\Shared\GenericList.razor.g.cs
-C:\Users\Ron2\source\repos\BlazorMovies\BlazorMovies\Client\obj\Debug\netstandard2.1\integrity\WuQrIDP2BLlYDytY9GaEyGzMnC-DRof-Rmt19LHGMuU=.hash
-C:\Users\Ron2\source\repos\BlazorMovies\BlazorMovies\Client\obj\Debug\netstandard2.1\integrity\r2kSODnVj3ugrkaApB33oXzEdemYQnkS2naoF8bBsGI=.hash
-C:\Users\Ron2\source\repos\BlazorMovies\BlazorMovies\Client\obj\Debug\netstandard2.1\integrity\nMgwUdUBZwx6s2XaUDobY5VG8scNf0XBMncuvPPkZYA=.hash
-C:\Users\Ron2\source\repos\BlazorMovies\BlazorMovies\Client\obj\Debug\netstandard2.1\integrity\-u9tlVjmQJt3w5q3dJRbg41RGf1O_v1x6FhXYFX3wlY=.hash
-C:\Users\Ron2\source\repos\BlazorMovies\BlazorMovies\Client\obj\Debug\netstandard2.1\integrity\PbHXF9NfBwoIOoketVecLtvQOzMk9rJsXOhKn7_ScMs=.hash
+C:\Users\Ron2\source\repos\BlazorMovies\BlazorMovies\Client\obj\Debug\netstandard2.1\RazorDeclaration\Shared\Paginator.razor.g.cs
+C:\Users\Ron2\source\repos\BlazorMovies\BlazorMovies\Client\obj\Debug\netstandard2.1\Razor\Shared\Paginator.razor.g.cs
+C:\Users\Ron2\source\repos\BlazorMovies\BlazorMovies\Client\obj\Debug\netstandard2.1\integrity\ixwSYrxDjy8gYn0dvYhzSau-EfLkOIFnJOs7hP5Lhps=.hash
+C:\Users\Ron2\source\repos\BlazorMovies\BlazorMovies\Client\obj\Debug\netstandard2.1\integrity\pirgqU8Cs5Li3qZoetguP3Q7HsZwLWQF9JQDmzHOEDw=.hash
+C:\Users\Ron2\source\repos\BlazorMovies\BlazorMovies\Client\obj\Debug\netstandard2.1\integrity\hQEcHfO4l9Z_hWcg8NXkYuPmV5zjo102Q9jBo0MfY8c=.hash
+C:\Users\Ron2\source\repos\BlazorMovies\BlazorMovies\Client\obj\Debug\netstandard2.1\integrity\r_grAVJtSFWM_LsKLxfeG-_I6Qmkh6i_y48uDmzS6Ms=.hash
+C:\Users\Ron2\source\repos\BlazorMovies\BlazorMovies\Client\obj\Debug\netstandard2.1\integrity\aFQ3QmU_M5FzbEZ3MJDBE8YcI3M_AQfVVpHksuDgZMM=.hash

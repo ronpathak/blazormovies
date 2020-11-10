@@ -36,14 +36,12 @@
     {
         NoSelected.Remove(item);
         Selected.Add(item);
-
     }
 
     private void Deselect(MultipleSelectorModel item)
     {
         NoSelected.Add(item);
         Selected.Remove(item);
-
     }
 
     private void SelectAll()
@@ -57,6 +55,4 @@
         NoSelected.AddRange(Selected);
         Selected.Clear();
     }
-
-
 }

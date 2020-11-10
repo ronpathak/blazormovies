@@ -8,6 +8,7 @@ using Microsoft.Extensions.Hosting;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using BlazorMovies.Server.Helpers;
+using AutoMapper;
 // using Tewr.Blazor.FileReader;
 
 namespace BlazorMovies.Server
@@ -26,11 +27,12 @@ namespace BlazorMovies.Server
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationDbContext>(option => option.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddAutoMapper(typeof(Startup));
             services.AddControllersWithViews();
             services.AddRazorPages();
             services.AddScoped<IFileStorageService, InAppStorageService>();
             services.AddHttpContextAccessor();
-          //  services.AddFileReaderService(options => options.InitializeOnFirstCall = true);
+            services.AddMvc().AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

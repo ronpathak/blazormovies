@@ -94,6 +94,13 @@ using BlazorMovies.Client.Repositories;
 #line hidden
 #nullable disable
 #nullable restore
+#line 13 "C:\Users\Ron2\source\repos\BlazorMovies\BlazorMovies\Client\_Imports.razor"
+using BlazorMovies.Shared.DTOs;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
 #line 2 "C:\Users\Ron2\source\repos\BlazorMovies\BlazorMovies\Client\Pages\FetchData.razor"
 using BlazorMovies.Shared;
 

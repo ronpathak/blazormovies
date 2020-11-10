@@ -1,55 +1,78 @@
 ﻿@page "/movies/edit/{MovieId:int}"
-@page "/movies/edit/{MovieId:int}/{MovieName}"
 @inject NavigationManager navigationManager
+@inject IMoviesRepository movierepository
 
 <h3>Edit Movie</h3>
 
-<MovieForm movie="movie" NotSelectedGenres = "NotSelectedGenres" SelectedGenres = "SelectedGenres" OnValidSubmit="MovieEdit" />
-
+@if (movie != null)
+{
+    <MovieForm movie="movie" NotSelectedGenres="NotSelectedGenresList" SelectedGenres="SelectedGenresList" SelectedActors="SelectedActors" OnValidSubmit="MovieEdit" />
+}
+@*SelectedActors="SelectedActors" *@
 
 
 @code {
-        [Parameter]
-        public int MovieId { get; set; }
+    [Parameter]
+    public int MovieId { get; set; }
 
-        [Parameter]
-        public string MovieName { get; set; }
+    private Movie movie = new Movie();
+    private Genre genre;
+    private List<Genre> SelectedGenresList = new List<Genre>();// { new Genre() { Id = 2, Name = "Comedy" } };
+    private List<Genre> NotSelectedGenresList = new List<Genre>(); //{ new Genre() { Id = 2, Name = "Action" } };
+    private List<Person> SelectedActors = new List<Person>();
 
-        private Movie movie = new Movie();
 
-        private List<Genre> SelectedGenres = new List<Genre>() 
+    //private List<Genre> NotSelectedGenres = new List<Genre>()
+    //{
+    //    new Genre(){Id = 2, Name = "Comedy"},
+    //    new Genre(){Id = 3, Name = "Drama"}
+    //};
+
+    //private List<Genre> SelectedGenres = new List<Genre>()
+    //{
+    //    new Genre(){Id = 1, Name = "Action"}
+    //};
+
+
+    protected async override Task OnInitializedAsync()
     {
-        new Genre(){Id= 11, Name="Action"},
-        new Genre(){Id= 12, Name="Adventure"} 
-    };
+        var model = await movierepository.GetMovieToUpdate(MovieId);
+        movie = model.Movie;
+        SelectedGenresList = model.SelectedGenres;
+        NotSelectedGenresList = model.NotSelectedGenres;
+        SelectedActors = model.Actors;
 
-        private List<Genre> NotSelectedGenres = new List<Genre>()
-    {
-        new Genre(){Id= 13, Name="Kids"},
-        new Genre(){Id= 14, Name="Romance"}
-    };
 
-        protected override void OnInitialized()
+
+
+        Console.WriteLine($"the movie Poster is {movie.Poster}");
+
+        Console.WriteLine($"The id of the movie is {MovieId}");
+        Console.WriteLine($"The name  of the movie is {movie.Title}");
+        Console.WriteLine($"The summary of the movie is {movie.Summary}");
+        Console.WriteLine($"The selected genres of the movie are:");
+        for (int gen = 0; gen < SelectedGenresList.Count; gen++)
         {
-            movie = new Movie() { Id = MovieId, Title = "Superman", Summary = "Once upon a time there was only 1 superhero", InTheatres = true, Trailer = "This is where the trailer clip would be", Poster = "https://m.media-amazon.com/images/M/MV5BNzY2ZDQ2MTctYzlhOC00MWJhLTgxMmItMDgzNDQwMDdhOWI2XkEyXkFqcGdeQXVyNjc1NTYyMjg@._V1_UX182_CR0,0,182,268_AL_.jpg" };
-
-
-
+            Console.WriteLine($"{SelectedGenresList[gen].Id}   {SelectedGenresList[gen].Name}");
+        }
+        Console.WriteLine($"The notselected genres of the movie are:");
+        for (int gen = 0; gen < NotSelectedGenresList.Count; gen++)
+        {
+            Console.WriteLine($"{NotSelectedGenresList[gen].Id}     {NotSelectedGenresList[gen].Name}");
+        }
+        Console.WriteLine($"The actors of the movie are:");
+        for (int act = 0; act < SelectedActors.Count; act++)
+        {
+            Console.WriteLine($"{SelectedActors[act].Name}");
+        }
     }
 
 
     private void MovieEdit()
     {
         Console.WriteLine($"Movie saved with name: { movie.Title}");
-        Console.WriteLine($"Movie saved with summary: { movie.Summary}");
-        Console.WriteLine($"Movie saved with tralier: { movie.Trailer}");
-        Console.WriteLine($"Movie saved with In Theatres: { movie.InTheatres}");
-        Console.WriteLine($"Movie saved with genre: { movie.Genre}");
-        Console.WriteLine($"Movie saved with poster: { movie.Poster}");
         navigationManager.NavigateTo("movies/search");
     }
-
-
 
 
 }

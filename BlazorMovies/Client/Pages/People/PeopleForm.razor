@@ -16,7 +16,7 @@
 
     <div class="form-group">
         <label> Biography</label>
-        <textarea class="form-control" @bind="@person.Biography" rows="3" ></textarea>
+        <textarea class="form-control" @bind="@person.Biography" rows="3"></textarea>
         <ValidationMessage For="@(()=> person.Biography)" />
     </div>
 
@@ -46,23 +46,26 @@
     @* These parameter are going to be used when importing the InputImage razor component*@
 
     string imageURL;
-    private void PictureSelected(string imageBase64)
-    {
-        person.Picture = imageBase64;
-        imageURL = null;
-        Console.WriteLine(imageBase64);
-    }
 
     @* Given that the InputImage razor component can be used for both creating and editing images, we need to check if there are any pictures to uploaded at the beginning for editing *@
 protected override void OnInitialized()
 {
+    
     if (!string.IsNullOrEmpty(person.Picture))
     {
         imageURL = person.Picture;
         person.Picture = null;
     }
-
 }
+
+
+private void PictureSelected(string imageBase64)
+{
+    person.Picture = imageBase64;
+    imageURL = null;
+    Console.WriteLine(imageBase64);
+}
+
 
 
 }

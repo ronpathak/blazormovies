@@ -335,5 +335,10 @@ C:\Users\Ron2\source\repos\BlazorMovies\BlazorMovies\Server\bin\Debug\netcoreapp
 C:\Users\Ron2\source\repos\BlazorMovies\BlazorMovies\Server\bin\Debug\netcoreapp3.1\tr\Microsoft.CodeAnalysis.Workspaces.resources.dll
 C:\Users\Ron2\source\repos\BlazorMovies\BlazorMovies\Server\bin\Debug\netcoreapp3.1\zh-Hans\Microsoft.CodeAnalysis.Workspaces.resources.dll
 C:\Users\Ron2\source\repos\BlazorMovies\BlazorMovies\Server\bin\Debug\netcoreapp3.1\zh-Hant\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\Ron2\source\repos\BlazorMovies\BlazorMovies\Server\bin\Debug\netcoreapp3.1\AutoMapper.dll
+C:\Users\Ron2\source\repos\BlazorMovies\BlazorMovies\Server\bin\Debug\netcoreapp3.1\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
+C:\Users\Ron2\source\repos\BlazorMovies\BlazorMovies\Server\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.JsonPatch.dll
+C:\Users\Ron2\source\repos\BlazorMovies\BlazorMovies\Server\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+C:\Users\Ron2\source\repos\BlazorMovies\BlazorMovies\Server\bin\Debug\netcoreapp3.1\Newtonsoft.Json.Bson.dll
 C:\Users\Ron2\source\repos\BlazorMovies\BlazorMovies\Server\obj\Debug\netcoreapp3.1\BlazorMovies.Server.csproj.CoreCompileInputs.cache
 C:\Users\Ron2\source\repos\BlazorMovies\BlazorMovies\Server\obj\Debug\netcoreapp3.1\BlazorMovies.Server.MvcApplicationPartsAssemblyInfo.cache

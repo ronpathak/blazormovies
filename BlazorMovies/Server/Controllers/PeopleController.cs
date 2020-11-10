@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using BlazorMovies.Server;
 using BlazorMovies.Shared.Entities;
 using BlazorMovies.Server.Helpers;
+using AutoMapper;
 
 namespace BlazorMovies.Server.Controllers
 {
@@ -17,11 +18,13 @@ namespace BlazorMovies.Server.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly IFileStorageService fileStorageService;
+        private readonly IMapper mapper;
 
-        public PeopleController(ApplicationDbContext context, IFileStorageService fileStorageService)
+        public PeopleController(ApplicationDbContext context, IFileStorageService fileStorageService, IMapper mapper)
         {
             _context = context;
             this.fileStorageService = fileStorageService;
+            this.mapper = mapper;
         }
 
         // GET: api/People
@@ -29,6 +32,13 @@ namespace BlazorMovies.Server.Controllers
         public async Task<ActionResult<IEnumerable<Person>>> GetPeople()
         {
             return await _context.People.ToListAsync();
+        }
+
+        // GET: api/People/PageNumber/RecordsPerPage
+        [HttpGet("pages/{pagenumber}/{recordsperpage}")]
+        public async Task<ActionResult<IEnumerable<Person>>> GetPeopleByPage(int pagenumber, int recordsperpage)
+        {
+            return await _context.People.Skip((pagenumber-1)*recordsperpage).Take(recordsperpage).ToListAsync();
         }
 
         // GET: api/People/5
@@ -57,42 +67,34 @@ namespace BlazorMovies.Server.Controllers
                 .ToListAsync();
         }
 
+        [HttpGet("count")]
+        public int CountPeople()
+        {
+            int NumberOfRecords = _context.People.Count();
+            return NumberOfRecords;
+        }
 
         // PUT: api/People/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
         public async Task<IActionResult> PutPerson(int id, Person person)
         {
-            if (id != person.Id)
+
+            var personDB = await _context.People.FindAsync(id);
+            if (personDB == null)
             {
-                return BadRequest();
+                return NotFound();
             }
+
+            personDB = mapper.Map(person, personDB);
 
             if (!string.IsNullOrWhiteSpace(person.Picture))
             {
                 var personPicture = Convert.FromBase64String(person.Picture);
-                person.Picture = await fileStorageService.SaveFile(personPicture, "jpg", "people");
+                personDB.Picture = await fileStorageService.EditFile(personPicture,
+                    "jpg", "people", personDB.Picture);
             }
 
-            _context.Entry(person).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!PersonExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
+            await _context.SaveChangesAsync();
             return NoContent();
         }
 

@@ -23,27 +23,27 @@
         <InputText class="form-control" @bind-Value="@movie.Trailer"></InputText>
         <ValidationMessage For="@(()=> movie.Trailer)" />
     </div>
+
     <div class="form-group">
         <label> Movie Genre</label>
         <MultipleSelector NoSelected="NotSelected" Selected="Selected" />
     </div>
 
     <div class="form-group">
-        <label> Actors</label>
-        <MultipleSelectorTypeahead Context="person" SearchMethod="SearchMethod" SelectedElements="SelectedActors">
+            <label> Actors</label>
+            <MultipleSelectorTypeahead Context="person" SearchMethod="SearchMethod" SelectedElements="SelectedActors">
 
-            <MyResultTemplate>
-                <img style="width: 50px;" src="@person.Picture" />
-                @person.Name
-            </MyResultTemplate>
+                <MyResultTemplate>
+                    <img style="width: 50px;" src="@person.Picture" />
+                    @person.Name
+                </MyResultTemplate>
 
-            <MyListTemplate>
-                @person.Name / <input type="text" placeholder="Character" @bind="person.Character" />
-            </MyListTemplate>
+                <MyListTemplate>
+                    @person.Name / <input type="text" placeholder="Character" @bind="person.Character" />
+                </MyListTemplate>
 
-        </MultipleSelectorTypeahead>
-    </div>
-
+            </MultipleSelectorTypeahead>
+        </div>
 
     <div class="form-group">
         <InputImage Label="Movie Poster" OnSelectedImage="PosterSelected" ImageURL="@imageURL" />
@@ -72,47 +72,54 @@
     private List<MultipleSelectorModel> Selected = new List<MultipleSelectorModel>();
     private List<MultipleSelectorModel> NotSelected = new List<MultipleSelectorModel>();
 
-    private string imageURL;
+    string imageURL;
 
 
     @* Given that the InputImage razor component can be used for both creating and editing images, we need to check if there are any pictures to uploaded at the beginning for editing *@
     protected override void OnInitialized()
     {
         @* if any genre types have been previously assigned, organise them into selected and non-selected *@
-        Selected = SelectedGenres.Select(x => new MultipleSelectorModel(x.Id.ToString(), x.Name)).ToList();
-        NotSelected = NotSelectedGenres.Select(x => new MultipleSelectorModel(x.Id.ToString(), x.Name)).ToList();
+    Selected = SelectedGenres.Select(x => new MultipleSelectorModel(x.Id.ToString(), x.Name)).ToList();
+    NotSelected = NotSelectedGenres.Select(x => new MultipleSelectorModel(x.Id.ToString(), x.Name)).ToList();
 
         @* i a picture has been previously assigned, then show it. *@
-        if (!string.IsNullOrEmpty(movie.Poster))
-        {
-            imageURL = movie.Poster;
-            movie.Poster = null;
-        }
-    }
-
-    private void PosterSelected(string imageBase64)
+    if (!string.IsNullOrEmpty(movie.Poster))
     {
-        movie.Poster = imageBase64;
-        imageURL = null;
-        Console.WriteLine(imageBase64);
+        imageURL = movie.Poster;
+        movie.Poster = null;
     }
 
-    private async Task<IEnumerable<Person>> SearchMethod(string searchText)
+    Console.WriteLine($"the image url is {imageURL}");
+}
+
+private void PosterSelected(string imageBase64)
+{
+    movie.Poster = imageBase64;
+    imageURL = null;
+    Console.WriteLine(imageBase64);
+}
+
+private async Task<IEnumerable<Person>> SearchMethod(string searchText)
+{
+    return await peopleRepository.GetPersonByName(searchText);
+}
+
+private async Task OnDataAnnotationsValidated()
+{
+    movie.MovieGenres = Selected.Select(x => new MoviesGenres { GenreId = int.Parse(x.Key) }).ToList();
+
+    movie.MovieActors = SelectedActors
+        .Select(x => new MoviesPersons { PersonId = x.Id, Character = x.Character }).ToList();
+
+    //if (!string.IsNullOrWhiteSpace(movie.Poster)) { imageURL = null; }
+
+    if (!string.IsNullOrEmpty(movie.Poster))
     {
-        return await peopleRepository.GetPersonByName(searchText);
+        imageURL = movie.Poster;
+        movie.Poster= null;
     }
+    await OnValidSubmit.InvokeAsync(null);
 
-    private async Task OnDataAnnotationsValidated()
-    {
-        //movie.MovieGenres = Selected
-        //    .Select(x => new MoviesGenres { GenreId = int.Parse(x.Key) }).ToList();
-
-        //movie.MovieActors = SelectedActors
-        //    .Select(x => new MoviesPersons { PersonId = x.Id, Character = x.Character }).ToList();
-
-        if (!string.IsNullOrWhiteSpace(movie.Poster)) { imageURL = null; }
-        Console.WriteLine("OnDatAnnotationsValidated invoking OnValidSubmit");
-        await OnValidSubmit.InvokeAsync(null);
-    }
+}
 
 }

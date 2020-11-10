@@ -5,47 +5,34 @@
 
 @if (Person != null)
 {
-
     <PeopleForm person="Person" OnValidSubmit="Edit" />
-
-
 }
 
 
 @code {
 
-
     [Parameter]
     public int PersonId { get; set; }
 
-    [Parameter]
-    public string PersonName { get; set; }
-
-    Person Person = new Person();
-
+    Person Person;
 
     protected async override Task OnInitializedAsync()
     {
+
+        Person = await peopleRepository.GetPerson(PersonId);
+
+    }
+
+    private async Task Edit()
+    {
         try
         {
-            Person = await peopleRepository.GetPerson(PersonId);
+            await peopleRepository.UpdatePerson(PersonId, Person);
+            navigationManager.NavigateTo("people");
         }
         catch (Exception ex)
         {
             Console.WriteLine(ex.Message);
         }
-
     }
-
-
-    private async Task Edit()
-    {
-        Console.WriteLine("starting edit");
-        await peopleRepository.UpdatePerson(PersonId, Person);
-        Console.WriteLine("db updated");
-        navigationManager.NavigateTo("people");
-
-    }
-
-
 }

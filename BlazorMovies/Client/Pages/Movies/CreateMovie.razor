@@ -7,10 +7,9 @@
 <h3>Create Movie</h3>
 
 @if (NotSelectedGenres != null)
-{
-    <MovieForm movie="movie" NotSelectedGenres="NotSelectedGenres" SelectedGenres="SelectedGenres" OnValidSubmit="SaveMovie" />
-}
-
+    {
+        <MovieForm movie="movie" NotSelectedGenres="NotSelectedGenres" SelectedGenres="SelectedGenres" OnValidSubmit="SaveMovie" />
+    }
 
 
 @code {
@@ -33,17 +32,12 @@
 
         try
         {
-            Console.WriteLine("trying to write to database");
             await movieRepository.CreateMovie(movie);
-
         }
         catch (Exception ex)
         {
             Console.WriteLine(ex.Message);
         }
-        //StateHasChanged();
         navigationManager.NavigateTo("movies/search");
-
     }
-
 }

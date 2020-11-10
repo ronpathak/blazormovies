@@ -10,7 +10,7 @@ namespace BlazorMovies.Client.Repositories
     public class PeopleRepository: IPeopleRepository
     {
         private readonly IHttpService httpService;
-        private string url = "api/people";
+        private readonly string url = "api/people";
 
         public PeopleRepository(IHttpService httpService)
         {
@@ -18,7 +18,7 @@ namespace BlazorMovies.Client.Repositories
         }
 
 
-        public async Task<List<Person>> GetPerson()
+        public async Task<List<Person>> GetPeople()
         {
             var response = await httpService.Get<List<Person>>(url);
             if (!response.Success)
@@ -28,6 +28,26 @@ namespace BlazorMovies.Client.Repositories
             return response.Response;
         }
 
+        public async Task<int> CountPeople()
+        {
+            Console.WriteLine("Executing people repo CountPeople");
+            var response = await httpService.Get<int>($"{url}/count");
+            if (!response.Success)
+            {
+                throw new ApplicationException(await response.GetBody());
+            }
+            return response.Response;
+        }
+
+        public async Task<List<Person>> GetPeopleByPage(int pagenumber, int recordsperpage)
+        {
+            var response = await httpService.Get<List<Person>>($"{url}/pages/{pagenumber}/{recordsperpage}");
+            if (!response.Success)
+            {
+                throw new ApplicationException(await response.GetBody());
+            }
+            return response.Response;
+        }
 
         public async Task<Person> GetPerson(int Id)
         {
@@ -39,6 +59,7 @@ namespace BlazorMovies.Client.Repositories
             return response.Response;
         }
 
+
         public async Task<List<Person>> GetPersonByName(string name)
         {
             var response = await httpService.Get<List<Person>>($"{url}/search/{name}");
@@ -48,7 +69,6 @@ namespace BlazorMovies.Client.Repositories
             }
             return response.Response;
         }
-
 
         public async Task CreatePerson(Person person)
         {
@@ -62,9 +82,7 @@ namespace BlazorMovies.Client.Repositories
 
         public async Task UpdatePerson(int Id, Person person)
         {
-            Console.WriteLine("starting people repo update");
             var response = await httpService.Put($"{url}/{Id}", person);
-            Console.WriteLine("awaiting feedback from https");
             if (!response.Success)
             {
                 throw new ApplicationException(await response.GetBody());

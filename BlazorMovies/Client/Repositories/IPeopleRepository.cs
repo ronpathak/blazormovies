@@ -11,8 +11,10 @@ namespace BlazorMovies.Client.Repositories
         Task CreatePerson(Person person);
         Task DeletePerson(int Id);
         Task<Person> GetPerson(int Id);
-        Task<List<Person>> GetPerson();
+        Task<List<Person>> GetPeople();
         Task<List<Person>> GetPersonByName(string name);
         Task UpdatePerson(int Id, Person person);
+        Task<List<Person>> GetPeopleByPage(int pagenumber, int recordsperpage);
+        Task<int> CountPeople();
     }
 }

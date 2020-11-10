@@ -1,4 +1,5 @@
-﻿
+﻿@inject NavigationManager navigationManager
+@inject IMoviesRepository moviesRepository
 
 <div>
 
@@ -29,7 +30,7 @@
 
 
             };
-     }
+       }
     </div>
 </div>
 
@@ -38,18 +39,14 @@
     <RF1> Are you sure you want to delete @movieToBeDeleted.Title</RF1>
 </ConfirmationModalt>
 
-<ConfirmationModalt @ref="confirmationOfCancel" onConfirm="onConfirm2" onCancel="onCancel2">
-</ConfirmationModalt>
-
 
 @code {
 
 
     ConfirmationModalt confirmation;
-    ConfirmationModalt confirmationOfCancel;
 
     [Parameter]
-    public List<Movie> Movies {get;set;}
+    public List<Movie> Movies { get; set; }
 
 
 
@@ -62,14 +59,9 @@
 
     void onConfirm()
     {
-        confirmation.Hide();
-        confirmationOfCancel.Show();
-    }
 
-    void onConfirm2()
-    {
         Movies.Remove(movieToBeDeleted);
-        confirmationOfCancel.Hide();
+        confirmation.Hide();
         movieToBeDeleted = null;
     }
 
@@ -79,10 +71,11 @@
         movieToBeDeleted = null;
 
     }
-    void onCancel2()
-    {
-        confirmationOfCancel.Hide();
-        movieToBeDeleted = null;
 
+    private async Task DeleteMovie(int Id)
+    {
+        await moviesRepository.DeleteMovie(Id);
+        Movies = await moviesRepository.GetMovies();
     }
+
 }
