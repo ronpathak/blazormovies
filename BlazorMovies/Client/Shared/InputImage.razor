@@ -41,14 +41,11 @@
 
 @code {
 
-    [Parameter]
-    public string Label { get; set; } = "Image";
+    [Parameter] public string Label { get; set; } = "Image";
 
-    [Parameter]
-    public string ImageURL { get; set; }
+    [Parameter] public string ImageURL { get; set; }
 
-    [Parameter]
-    public EventCallback<string> OnSelectedImage { get; set; }
+    [Parameter] public EventCallback<string> OnSelectedImage { get; set; }
 
     private string imageBase64;
 

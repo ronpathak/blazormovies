@@ -18,8 +18,6 @@ namespace BlazorMovies.Shared.Entities
 
         public string Trailer { get; set; }
 
-        public string Genre { get; set; }
-
         public List<MoviesGenres> MovieGenres { get; set; } = new List<MoviesGenres>();
         public List<MoviesPersons> MovieActors { get; set; } = new List<MoviesPersons>();
 

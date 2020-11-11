@@ -8,7 +8,7 @@
 {
     <MovieForm movie="movie" NotSelectedGenres="NotSelectedGenresList" SelectedGenres="SelectedGenresList" SelectedActors="SelectedActors" OnValidSubmit="MovieEdit" />
 }
-@*SelectedActors="SelectedActors" *@
+@* NotSelectedGenres="NotSelectedGenresList" SelectedGenres="SelectedGenresList"  *@
 
 
 @code {
@@ -43,13 +43,22 @@
         SelectedActors = model.Actors;
 
 
+        //for (int i = 0; i < model.SelectedGenres.Count; i++)
+        //{
+        //    SelectedGenresList.Add(model.SelectedGenres[i]);
+        //}
+
+        //for (int j = 0; j < model.NotSelectedGenres.Count; j++)
+        //{
+        //    NotSelectedGenresList.Add(model.NotSelectedGenres[j]);
+        //}
 
 
-        Console.WriteLine($"the movie Poster is {movie.Poster}");
 
         Console.WriteLine($"The id of the movie is {MovieId}");
         Console.WriteLine($"The name  of the movie is {movie.Title}");
         Console.WriteLine($"The summary of the movie is {movie.Summary}");
+        Console.WriteLine($"the movie Poster is {movie.Poster}"); 
         Console.WriteLine($"The selected genres of the movie are:");
         for (int gen = 0; gen < SelectedGenresList.Count; gen++)
         {

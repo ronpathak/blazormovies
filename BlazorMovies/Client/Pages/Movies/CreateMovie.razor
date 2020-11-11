@@ -32,12 +32,13 @@
 
         try
         {
-            await movieRepository.CreateMovie(movie);
+            var movieId = await movieRepository.CreateMovie(movie);
+            navigationManager.NavigateTo($"movie/{movieId}/{movie.Title.Replace(" ", "-")}");
         }
         catch (Exception ex)
         {
             Console.WriteLine(ex.Message);
         }
-        navigationManager.NavigateTo("movies/search");
+
     }
 }
